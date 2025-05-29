@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cosmic What-If Generator</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono&display=swap');
+
+  body {
+    font-family: 'Space Mono', monospace;
+    background: url('https://i.imgur.com/Pciwym8.png') no-repeat center center fixed;
+    background-size: cover;
+    color: #f0e6d2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 50px 20px;
+    min-height: 100vh;
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.7);
+    margin: 0;
+  }
+  h1 {
+    color: #ffb347;
+    margin-bottom: 15px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+  }
+  label {
+    margin-top: 18px;
+    display: block;
+    font-size: 1.1rem;
+  }
+  input[type=text] {
+    width: 300px;
+    padding: 12px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    box-shadow: 0 0 8px rgba(255,179,71,0.7);
+    outline: none;
+  }
+  button {
+    margin-top: 30px;
+    background: #ffb347;
+    border: none;
+    padding: 14px 36px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #121212;
+    cursor: pointer;
+    border-radius: 10px;
+    box-shadow: 0 0 15px #ffb347aa;
+    transition: background 0.3s ease;
+  }
+  button:hover {
+    background: #ffd27f;
+  }
+  #output {
+    margin-top: 50px;
+    font-size: 1.4rem;
+    max-width: 600px;
+    text-align: center;
+    line-height: 1.5;
+    min-height: 100px;
+    background: rgba(0,0,0,0.5);
+    padding: 20px 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px #ffb347aa;
+  }
+  footer {
+    margin-top: auto;
+    font-size: 0.9rem;
+    color: #ccb880dd;
+    padding: 30px 0 10px;
+  }
+  /* Style for the audio player if you keep controls, optional */
+  audio {
+    margin-top: 20px;
+    border-radius: 25px;
+    /* A more subtle filter that fits the theme */
+    filter: hue-rotate(20deg) saturate(0.7) brightness(0.9);
+  }
+</style>
+</head>
+<body>
+
+<h1>Multiverse Alignment Report</h1>
+
+<label for="nameInput">Enter Your Name:</label>
+<input type="text" id="nameInput" placeholder="Your name here" />
+
+<label for="wordInput">Enter a Random Word (for fun):</label>
+<input type="text" id="wordInput" placeholder="Any word you like" />
+
+<button id="generateBtn">Generate Cosmic Outcome</button>
+
+<div id="output"></div>
+
+<audio id="neuralSound" src="https://www.soundjay.com/nature/sounds/wind-howl-01.mp3" controls loop>
+  Your browser does not support the audio element.
+</audio>
+
+
+<footer>
+  <p>Powered by your cosmic imagination ✨</p>
+</footer>
+
+<script>
+  const whatIfs = [
+    "you said yes to the train ride", "you never moved to the city", "you forgave the old friend",
+    "you chased the shooting star", "you skipped breakfast forever", "you built a rocket out of scrap",
+    "you whispered to the ancient tree", "you danced under the neon moon", "you wrote letters to strangers",
+    "you caught the last ferry home", "you took a shortcut through the fog", "you learned to speak with crows",
+    "you traded your shadow for time", "you followed the map in your dreams", "you never left the basement",
+    "you painted your thoughts on the sky", "you hid secrets inside an old book", "you sailed beyond the horizon",
+    "you listened to silence for days", "you found a key that opened nowhere", "you embraced the endless rain",
+    "you sang to the sleeping city", "you wandered into another lifetime", "you bought a ticket to yesterday",
+    "you laughed in the face of thunder", "you collected forgotten memories", "you swapped places with a ghost",
+    "you ignored the warning signs", "you built a home from shadows", "you chased a comet across the world",
+    "you lost count of the days", "you followed footsteps in the snow", "you planted dreams in barren soil",
+    "you rode the winds of change", "you spoke in riddles for a week", "you trusted a stranger’s smile",
+    "you never turned back", "you opened a door that should stay closed", "you wove stories out of starlight",
+    "you dined with the forgotten gods", "you left a trail of light behind", "you danced on a wire between worlds",
+    "you sang with the sirens of the deep", "you wrote your name in the stars", "you waited for the sun to rise twice",
+    "you chased shadows in the dark", "you found a mirror that lied", "you broke the silence with a scream",
+    "you watched the world through someone else’s eyes", "you dreamed of flying without wings",
+    "you opened your heart to the void", "you lived a thousand lifetimes in a day", "you walked the path no one else saw",
+    "you spoke to the wind and it answered", "you danced with time itself", "you lost yourself to find the truth",
+    "you held the universe in your hands"
+  ];
+
+  const outcomes = [
+    "became a lighthouse keeper", "found peace early", "built a home from shadows",
+    "discovered a secret garden", "wrote songs no one heard", "vanished without a trace",
+    "became a myth to three children", "traveled beneath the city streets", "drew maps of lost worlds",
+    "listened to the stars’ secrets", "held a world in your hands", "became the guardian of dreams",
+    "walked alone on endless roads", "crafted stories from whispers", "found beauty in broken things",
+    "painted the sky with hope", "lived quietly beyond time", "spoke only in riddles",
+    "found a home in the clouds", "sang songs of forgotten seas", "woke up inside a dream",
+    "kept watch over silent forests", "wrote letters to the wind", "rode comets across the night",
+    "held memories like fragile glass", "found answers in ancient ruins", "lived in a house made of light",
+    "followed the call of distant bells", "kept secrets beneath the waves", "became a shadow among shadows",
+    "wove tales from moonlight", "found joy in the smallest things", "built bridges from forgotten hopes",
+    "listened to laughter in the dark", "chased echoes of old songs", "held a candle in endless night",
+    "found love where none was expected", "danced among the falling leaves", "found magic in everyday moments",
+    "lived as a whisper in the wind", "held the key to unseen doors", "found light in the deepest caves",
+    "wrote your name on the horizon", "kept promises made to the stars", "found home in wandering",
+    "lived with the rhythm of the tides", "held stories no one told", "found strength in quiet moments",
+    "danced beneath forever skies", "listened to the heartbeat of the earth", "found peace in a fleeting glance",
+    "walked where no footsteps fell", "held dreams beyond the stars", "found truth in a forgotten song",
+    "lived between the lines of time", "chased the light no one saw", "wove your soul into the night",
+    "found beauty in the silence", "held the universe in your eyes"
+  ];
+
+  const echoes = [
+    "Loneliness followed.", "Serenity wrapped around you.", "A quiet kind of pride blossomed.",
+    "Mystery hung in the air.", "Hope whispered softly.", "A gentle sadness settled.",
+    "Joy flickered like fireflies.", "The night sang lullabies.", "Dreams danced in the shadows.",
+    "A calm stillness embraced you.", "Magic pulsed beneath your skin.", "Echoes of laughter lingered.",
+    "The stars blinked knowingly.", "A hush fell over the world.", "Whispers of the past stirred.",
+    "Time slowed its endless march.", "The wind carried forgotten songs.", "Shadows danced in the moonlight.",
+    "A spark of wonder ignited.", "Silence spoke volumes.", "The heart beat steady and true.",
+    "Colors faded into twilight.", "A smile lingered in the air.", "Memories shimmered like glass.",
+    "The world held its breath.", "A flicker of hope remained.", "Dreams wove their gentle spell.",
+    "The horizon glowed softly.", "Stars wept silver tears.", "Light faded into dusk.",
+    "A chill ran down your spine.", "Laughter echoed faintly.", "The night held its secrets.",
+    "A warmth spread quietly.", "Footsteps faded into silence.", "The sky blushed with dawn.",
+    "A song hummed beneath your breath.", "The moment stretched infinitely.", "A tear traced a silent path.",
+    "The breeze carried a promise.", "Darkness melted into light.", "A heartbeat skipped in time.",
+    "The world whispered your name.", "Dreams folded into themselves.", "A quiet peace settled deep.",
+    "The night carried your story.", "Stars shimmered with secrets.", "A sigh escaped..."
+  ];
+
+  const generateBtn = document.getElementById('generateBtn');
+  const outputDiv = document.getElementById('output');
+  const sound = document.getElementById('neuralSound');
+
+  // Function to update the story content in the output div
+  function updateStoryDisplay() {
+    const what = whatIfs[Math.floor(Math.random() * whatIfs.length)];
+    const outcome = outcomes[Math.floor(Math.random() * outcomes.length)];
+    const echo = echoes[Math.floor(Math.random() * echoes.length)];
+
+    if (outputDiv) {
+      outputDiv.innerHTML = `What if ${what}...<br><br>You ${outcome}.<br><br>${echo}`;
+    } else {
+      console.error("Output element not found!");
+    }
+  }
+
+  // Function to attempt playing the sound
+  function playNeuralSound() {
+    if (sound) {
+      // Ensure the sound is loaded before playing, especially if changing src dynamically
+      // For a fixed src, this is less critical but good practice.
+      sound.load(); // This might not be strictly necessary if src is static and preloaded.
+      sound.play().then(() => {
+        console.log("Audio playback initiated by user interaction.");
+      }).catch(error => {
+        console.error("Error playing sound:", error);
+        // Display a more user-friendly message if playback fails
+        if (outputDiv && !outputDiv.innerHTML.includes("Audio playback issue")) {
+             outputDiv.innerHTML += "<br><br><small style='color: #ffcc00;'>(Audio playback issue. The sound file might be unavailable or blocked. Please try a different sound source if this persists.)</small>";
+        }
+      });
+    } else {
+      console.error("Audio element 'neuralSound' not found!");
+    }
+  }
+
+  // Function to be called when the button is clicked
+  function generateStoryAndPlaySound() {
+    updateStoryDisplay(); // Update the story
+    playNeuralSound();    // Then attempt to play the sound
+  }
+
+  if (generateBtn) {
+    // Event listener for the button click
+    generateBtn.addEventListener('click', generateStoryAndPlaySound);
+  } else {
+    console.error("Generate button not found!");
+  }
+
+  // On page load, just update the story content.
+  // Sound will only be attempted after the user clicks the "Generate Cosmic Outcome" button.
+  updateStoryDisplay();
+
+</script>
+
+</body>
+</html>
